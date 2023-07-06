@@ -65,6 +65,7 @@ public class Admin extends User{
                 }
             }
         }
+//        DatabaseConnection.closeConnection();
     }
 
 

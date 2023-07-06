@@ -53,7 +53,7 @@ public class User {
         ResultSet resultSet = null;
 
         try {
-            connection =DatabaseConnection.getConnection();
+            connection = DatabaseConnection.getConnection();
             statement = connection.createStatement();
 
             String query = "SELECT b.idBooks, b.Name, b.Author, b.Status, b.TakenBy, u.Name AS UserName " +
@@ -103,7 +103,7 @@ public class User {
                 }
             }
         }
-        DatabaseConnection.closeConnection();
+//        DatabaseConnection.closeConnection();
     }
 
     @Override

@@ -1,7 +1,7 @@
-import java.util.Calendar;
 import java.util.Date;
 
 public class Book {
+    private int id;
     private String name;
     private String author;
     private Date dueReturn;
@@ -9,21 +9,22 @@ public class Book {
     private String takenBy;
 
 
-    public Book(String name, String author, Date dueReturn) {
+    public Book(int bookId, String bookName, String author, int status, int takenBy) {
+        this.id = id;
         this.name = name;
         this.author = author;
         this.dueReturn = dueReturn;
         this.status = 0;
     }
 
-    public Book(){
-        this.name = "A Song of Ice and Fire";
-        this.author = "George R.R. Martin";
-        this.dueReturn = new Date(2023, 6,30);
-        this.status = 0;
-        this.takenBy = null;
-
-    }
+//    public Book(){
+//        this.name = "A Song of Ice and Fire";
+//        this.author = "George R.R. Martin";
+//        this.dueReturn = new Date(2023, 6,30);
+//        this.status = 0;
+//        this.takenBy = null;
+//
+//    }
 
     public String getName() {
         return name;

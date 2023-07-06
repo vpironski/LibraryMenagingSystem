@@ -4,10 +4,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Reader extends User{
 //    private Book firstBook;
-    private ArrayList<Book> bookList = new ArrayList<>();
+    private  List<Book> bookList = new ArrayList<>();
     public Reader(int id, String name, String key, int isAdmin, double taxes) {
         super(id, name, key, isAdmin, taxes);
     }
@@ -16,38 +17,57 @@ public class Reader extends User{
 //        firstBook = new Book();
 //        bookList.add(firstBook);
 //        return bookList;
-    public void yourBooks(){
-        Connection connection = DatabaseConnection.getConnection();
-        try {
-            Statement statement = connection.createStatement();;
-            String query = "SELECT * FROM Books";
-            ResultSet resultSet = statement.executeQuery(query);
+public List<Book> yourBookList() {
 
-            while (resultSet.next()) {
-                System.out.println("Books Table:");
-                String booksQuery = "SELECT * FROM Books" +
-                        "WHERE ";
-                ResultSet booksResult = statement.executeQuery(booksQuery);
-                while (booksResult.next()) {
-                    int id = booksResult.getInt("idBooks");
-                    String name = booksResult.getString("Name");
-                    String author = booksResult.getString("Author");
-                    int status = booksResult.getInt("Status");
-                    String takenBy = booksResult.getString("Taken By");
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
 
-                    System.out.println("ID: " + id + ", Name: " + name + ", Author: " + author + ", Status: " + status + ", Taken By: " + takenBy);
-                }
-            }
+    try {
+        connection = DatabaseConnection.getConnection();
+        statement = connection.createStatement();
 
-            resultSet.close();
-            statement.close();
-        } catch (SQLException e) {
-            System.err.println("Error executing the query: " + e.getMessage());
+        String query = "SELECT * FROM Books WHERE TakenBy = " + getId();
+        resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            int bookId = resultSet.getInt("idBooks");
+            String bookName = resultSet.getString("Name");
+            String author = resultSet.getString("Author");
+            int status = resultSet.getInt("Status");
+            int takenBy = resultSet.getInt("TakenBy");
+
+            Book book = new Book(bookId, bookName, author, status, takenBy);
+            bookList.add(book);
         }
-
-
-        DatabaseConnection.closeConnection();
+    } catch (SQLException e) {
+        System.err.println("Error executing the query: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing the result set: " + e.getMessage());
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing the statement: " + e.getMessage());
+            }
+        }
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing the connection: " + e.getMessage());
+            }
+        }
     }
+
+    return bookList;
+}
     public void takeBook(Book book){
         if(book.getStatus() != 1){
             book.setStatus(1);

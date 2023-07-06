@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class Main {
+    private static List<Book> bookList = new ArrayList<>();
     private static boolean profileFlag = false;
     private static int id;
     private static String name = "Vihren Pironski";
@@ -62,16 +65,21 @@ public class Main {
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
 
     public static void main(String[] args) {
-//        if(profileFlag == false){
+        if(!profileFlag){
             populateUserInfo(name, key);
-            Admin testAdmin = new Admin(id,name,key,isAdmin,taxes);
+//            Admin testAdmin = new Admin(id,name,key,isAdmin,taxes);
 //            System.out.println(testAdmin.toString());
-            testAdmin.viewUsers();
+//            testAdmin.viewUsers();
 //            testAdmin.viewBooks();
-//        }
+            Reader testReader = new Reader(id,name,key,isAdmin,taxes);
+            bookList =  testReader.yourBookList();
+            System.out.println(bookList);
+
+        }
 
 
     }
