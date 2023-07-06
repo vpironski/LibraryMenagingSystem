@@ -5,13 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfc8031b-4de9-4597-84ff-555cf83dc654" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../JavaProjects/out/production/JavaProjects/company/StrEquation.class" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaProjects/out/production/JavaProjects/company/StrEquation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../JavaProjects/src/company/StrEquation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaProjects/src/company/StrEquation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Admin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Book.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DatabaseConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Reader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2S3X6l57mY20ji3fkBaejetPUAR" />
   <component name="ProjectViewState">
@@ -23,16 +38,48 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/vihrenpironski/Dropbox/Mac/Documents/Workspace/Java-Projects/LibraryMenagingSystem",
+    "last_opened_file_path": "/Users/vihrenpironski/Dropbox/Mac/Documents/Workspace/LibraryMenagingSystem",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="DatabaseConnection (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DatabaseConnection" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DatabaseConnection" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DatabaseConnection" />
+      <module name="LibraryMenagingSystem" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="LibraryMenagingSystem" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.DatabaseConnection" />
+        <item itemvalue="Application.DatabaseConnection (1)" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -42,6 +89,8 @@
       <option name="presentableId" value="Default" />
       <updated>1688376064350</updated>
       <workItem from="1688376065351" duration="996000" />
+      <workItem from="1688505168278" duration="1647000" />
+      <workItem from="1688508639474" duration="17211000" />
     </task>
     <servers />
   </component>
