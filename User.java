@@ -1,7 +1,7 @@
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.*;
+import java.time.LocalDate;
+import java.util.*;
 
 public class User {
     private int id;
@@ -46,7 +46,6 @@ public class User {
         this.taxes = taxes;
     }
 
-
     public void viewBooks(){
         Connection connection = null;
         Statement statement = null;
@@ -56,7 +55,7 @@ public class User {
             connection = DatabaseConnection.getConnection();
             statement = connection.createStatement();
 
-            String query = "SELECT b.idBooks, b.Name, b.Author, b.Status, b.TakenBy, u.Name AS UserName " +
+            String query = "SELECT b.idBooks, b.Name, b.Author, b.Status,b.returnDate, b.TakenBy, u.Name AS UserName " +
                     "FROM Books b " +
                     "LEFT JOIN Users u ON b.TakenBy = u.idUsers";
             resultSet = statement.executeQuery(query);
@@ -67,6 +66,7 @@ public class User {
                 String bookName = resultSet.getString("Name");
                 String author = resultSet.getString("Author");
                 int status = resultSet.getInt("Status");
+                java.sql.Date returnDate = resultSet.getDate("returnDate");
                 int takenBy = resultSet.getInt("TakenBy");
                 String userName = resultSet.getString("UserName");
 
@@ -74,13 +74,13 @@ public class User {
                         ", Name: " + bookName +
                         ", Author: " + author +
                         ", Status: " + status +
+                        ", returnDate: " + returnDate +
                         ", Taken By: " + takenBy +
                         ", User Name: " + userName);
             }
         } catch (SQLException e) {
             System.err.println("Error executing the query: " + e.getMessage());
         } finally {
-            // Close resources in the reverse order of their creation
             if (resultSet != null) {
                 try {
                     resultSet.close();
@@ -103,7 +103,183 @@ public class User {
                 }
             }
         }
-//        DatabaseConnection.closeConnection();
+    }
+    public List<Book> yourBookList(List<Book> bookList) {
+
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+
+            String query = "SELECT * FROM Books WHERE TakenBy = " + getId();
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int bookId = resultSet.getInt("idBooks");
+                String bookName = resultSet.getString("Name");
+                String author = resultSet.getString("Author");
+                int status = resultSet.getInt("Status");
+                java.sql.Date returnDate = resultSet.getDate("returnDate");
+                int takenBy = resultSet.getInt("TakenBy");
+
+                Book book = new Book(bookId, bookName, author, status, returnDate, takenBy);
+                bookList.add(book);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error executing the query: " + e.getMessage());
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the result set: " + e.getMessage());
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the statement: " + e.getMessage());
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the connection: " + e.getMessage());
+                }
+            }
+        }
+        return bookList;
+    }
+    public void takeBook(Book book) {
+        Connection connection = null;
+        PreparedStatement checkStatement = null;
+        PreparedStatement takeStatement = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String checkQuery = "SELECT Status, TakenBy FROM Books WHERE Name = ? AND Author = ?";
+            checkStatement = connection.prepareStatement(checkQuery);
+            checkStatement.setString(1, book.getName());
+            checkStatement.setString(2, book.getAuthor());
+            ResultSet checkResult = checkStatement.executeQuery();
+
+            if (checkResult.next()) {
+                int status = checkResult.getInt("Status");
+                int takenBy = checkResult.getInt("TakenBy");
+
+                if (status == 0 && takenBy == 0) {
+
+                    String takeQuery = "UPDATE Books SET Status = ?, TakenBy = ?, returnDate = ? WHERE Name = ? AND Author = ?";
+                    takeStatement = connection.prepareStatement(takeQuery);
+                    takeStatement.setInt(1, 1);
+                    takeStatement.setInt(2, getId());
+                    LocalDate returnDateDate = LocalDate.now().plusMonths(3);
+                    takeStatement.setDate(3, java.sql.Date.valueOf(returnDateDate));
+                    takeStatement.setString(4, book.getName());
+                    takeStatement.setString(5, book.getAuthor());
+                    int rowsAffected = takeStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Book taken successfully.");
+                    } else {
+                        System.out.println("Failed to take the book.");
+                    }
+                } else {
+                    System.out.println("The book is already taken by another user.");
+                }
+            } else {
+                System.out.println("Invalid book name or author.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error executing the query: " + e.getMessage());
+        } finally {
+            if (checkStatement != null) {
+                try {
+                    checkStatement.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the prepared statement: " + e.getMessage());
+                }
+            }
+            if (takeStatement != null) {
+                try {
+                    takeStatement.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the prepared statement: " + e.getMessage());
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the connection: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void returnBook(Book book) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+
+            String query = "SELECT TakenBy FROM Books WHERE Name = ? AND Author = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, book.getName());
+            statement.setString(2, book.getAuthor());
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int takenBy = resultSet.getInt("TakenBy");
+
+                if (takenBy == getId()) {
+                    // Update the book's status and details
+                    String updateQuery = "UPDATE Books SET Status = ?, TakenBy = ?, returnDate = ? WHERE Name = ? AND Author = ?";
+                    statement = connection.prepareStatement(updateQuery);
+                    statement.setInt(1, 0);
+                    statement.setNull(2, 0);
+                    statement.setNull(3, java.sql.Types.DATE);
+                    statement.setString(4, book.getName());
+                    statement.setString(5, book.getAuthor());
+                    int rowsAffected = statement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Book returned successfully.");
+                    } else {
+                        System.out.println("Failed to return the book.");
+                    }
+                } else {
+                    System.out.println("You cannot return a book that is taken by another user.");
+                }
+            } else {
+                System.out.println("Invalid book name or author.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error executing the query: " + e.getMessage());
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the statement: " + e.getMessage());
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing the connection: " + e.getMessage());
+                }
+            }
+        }
     }
 
     @Override

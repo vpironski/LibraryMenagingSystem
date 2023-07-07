@@ -27,11 +27,7 @@
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="66997faa-b39e-43ac-8e30-a5bc37a1d8a3" dataset="LibraryManagingSystem.Users" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="66997faa-b39e-43ac-8e30-a5bc37a1d8a3" dataset="LibraryManagingSystem.Books" active-filter-id="EMPTY_FILTER">
-      <filter id="4b301b08-90ba-4152-98f5-f3644d47ddf0" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="idBooks" operator="=" value="" active="true" />
-      </filter>
-    </filter-actions>
+    <filter-actions connection-id="66997faa-b39e-43ac-8e30-a5bc37a1d8a3" dataset="LibraryManagingSystem.Books" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />

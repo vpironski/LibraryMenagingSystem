@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.Connection;
@@ -11,7 +12,6 @@ public class Main {
     private static boolean profileFlag = false;
     private static int id;
     private static String name = "Vihren Pironski";
-//    private static String name = "Pesho";
     private static String key = "12345";
     private static int isAdmin;
     private static double taxes;
@@ -32,9 +32,6 @@ public class Main {
                 isAdmin = resultSet.getInt("IsAdmin");
                 taxes = resultSet.getDouble("Taxes");
 
-//                setId(id);
-//                setIsAdmin(isAdmin);
-//                setTaxes(taxes);
             }
             else {
                 profileFlag = true;
@@ -65,19 +62,30 @@ public class Main {
                 }
             }
         }
-        DatabaseConnection.closeConnection();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         if(!profileFlag){
+            DatabaseConnection.openConnection();
             populateUserInfo(name, key);
-//            Admin testAdmin = new Admin(id,name,key,isAdmin,taxes);
-//            System.out.println(testAdmin.toString());
-//            testAdmin.viewUsers();
-//            testAdmin.viewBooks();
-            Reader testReader = new Reader(id,name,key,isAdmin,taxes);
-            bookList =  testReader.yourBookList();
-            System.out.println(bookList);
+            DatabaseConnection.closeConnection();
+
+            Admin testAdmin = new Admin(id,name,key,isAdmin,taxes);
+
+
+            DatabaseConnection.openConnection();
+            populateUserInfo("Pesho Goshev", "1212");
+            DatabaseConnection.closeConnection();
+
+            Reader reader = new Reader(id, "Pesho Goshev", "1212", isAdmin, taxes);
+
+            DatabaseConnection.openConnection();
+            testAdmin.resetTaxes(reader);
+            DatabaseConnection.closeConnection();
+
+            DatabaseConnection.openConnection();
+            testAdmin.viewUsers();
+            DatabaseConnection.closeConnection();
 
         }
 

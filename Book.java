@@ -4,27 +4,26 @@ public class Book {
     private int id;
     private String name;
     private String author;
-    private Date dueReturn;
+    private java.sql.Date returnDate;
     private int status;
-    private String takenBy;
+    private int takenBy;
 
 
-    public Book(int bookId, String bookName, String author, int status, int takenBy) {
-        this.id = id;
-        this.name = name;
+    public Book(int bookId, String bookName, String author, int status, java.sql.Date returnDate, int takenBy) {
+        this.id = bookId;
+        this.name = bookName;
         this.author = author;
-        this.dueReturn = dueReturn;
+        this.status = status;
+        this.returnDate = returnDate;
+        this.takenBy = takenBy;
+    }
+
+    public Book(String bookName, String author) {
+        this.name = bookName;
+        this.author = author;
         this.status = 0;
     }
 
-//    public Book(){
-//        this.name = "A Song of Ice and Fire";
-//        this.author = "George R.R. Martin";
-//        this.dueReturn = new Date(2023, 6,30);
-//        this.status = 0;
-//        this.takenBy = null;
-//
-//    }
 
     public String getName() {
         return name;
@@ -35,14 +34,14 @@ public class Book {
     }
 
     public Date getDueReturn() {
-        return dueReturn;
+        return returnDate;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public String getTakenBy() {
+    public int getTakenBy() {
         return takenBy;
     }
 
@@ -51,7 +50,7 @@ public class Book {
         this.status = status;
     }
 
-    public void setTakenBy(String takenBy) {
+    public void setTakenBy(int takenBy) {
         this.takenBy = takenBy;
     }
 
@@ -60,7 +59,7 @@ public class Book {
         return "Book{" +
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
-                ", dueReturn=" + dueReturn +
+                ", dueReturn=" + returnDate +
                 '}';
     }
 }

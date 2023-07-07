@@ -6,11 +6,17 @@ public class DatabaseConnection {
     private static String password = "";
     private static Connection connection;
 
+    public static void openConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(url, username, password);
+//            System.out.println("Connection to the database is successful!");
+        }
+    }
     public static Connection getConnection() {
         if (connection == null) {
             try {
                 connection = DriverManager.getConnection(url, username, password);
-                System.out.println("Connection to the database is successful!");
+//                System.out.println("Connection to the database is successful!");
             } catch (SQLException e) {
                 System.err.println("Error connecting to the database: " + e.getMessage());
             }
@@ -22,7 +28,7 @@ public class DatabaseConnection {
         if (connection != null) {
             try {
                 connection.close();
-                System.out.println("Connection closed.");
+//                System.out.println("Connection closed.");
             } catch (SQLException e) {
                 System.err.println("Error closing the database connection: " + e.getMessage());
             }
