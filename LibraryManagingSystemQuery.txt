@@ -1,0 +1,115 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Jul 07, 2023 at 01:04 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.1.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `LibraryManagingSystem`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Books`
+--
+
+CREATE TABLE `Books` (
+  `idBooks` int(10) UNSIGNED NOT NULL,
+  `Name` varchar(100) NOT NULL,
+  `Author` varchar(100) NOT NULL,
+  `Status` int(11) NOT NULL,
+  `returnDate` date DEFAULT NULL,
+  `TakenBy` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Books`
+--
+
+INSERT INTO `Books` (`idBooks`, `Name`, `Author`, `Status`, `returnDate`, `TakenBy`) VALUES
+(1, 'The Shining', 'Stephen King', 1, '2023-11-12', 1),
+(2, 'Howl\'s Moving Castle', 'Diana Wynne Jones\n', 0, NULL, NULL),
+(3, 'The Fellowship of the Ring', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
+(4, 'The Two Towers', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
+(5, 'The Return Of The King', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
+(6, 'The Hobbit', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
+(7, 'The Silmarillion', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
+(8, 'Unfinished Tales of Númenor and Middle-earth', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
+(9, 'A Game of Thrones', 'George R.R. Martin', 0, NULL, NULL),
+(10, 'A Clash of Kings', 'George R.R. Martin', 0, NULL, NULL),
+(11, 'A Dance with Dragons', 'George R.R. Martin', 0, NULL, NULL),
+(12, 'A Storm of Swords', 'George R.R. Martin', 0, NULL, NULL),
+(13, 'A Feast for Crows', 'George R.R. Martin', 0, NULL, NULL),
+(14, 'Fire and Blood', 'George R.R. Martin', 0, NULL, NULL),
+(15, 'The World of Ice & Fire: The Untold History of Westeros and the Game of Thrones', 'George R.R. Martin', 0, NULL, NULL),
+(21, 'The Art of War', 'Sun Tzu', 0, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Users`
+--
+
+CREATE TABLE `Users` (
+  `idUsers` int(10) UNSIGNED NOT NULL,
+  `Name` varchar(80) NOT NULL,
+  `Key` varchar(45) NOT NULL,
+  `IsAdmin` int(11) NOT NULL,
+  `Taxes` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Users`
+--
+
+INSERT INTO `Users` (`idUsers`, `Name`, `Key`, `IsAdmin`, `Taxes`) VALUES
+(1, 'Gosho Ivanov', '1234', 0, 0),
+(2, 'Vihren Pironski', '12345', 1, 0),
+(3, 'Pesho Goshev', '1212', 0, 0);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Books`
+--
+ALTER TABLE `Books`
+  ADD PRIMARY KEY (`idBooks`),
+  ADD KEY `fk_Books_Users_idx` (`TakenBy`);
+
+--
+-- Indexes for table `Users`
+--
+ALTER TABLE `Users`
+  ADD PRIMARY KEY (`idUsers`),
+  ADD UNIQUE KEY `Key_UNIQUE` (`Key`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Books`
+--
+ALTER TABLE `Books`
+  MODIFY `idBooks` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Books`
+--
+ALTER TABLE `Books`
+  ADD CONSTRAINT `fk_Books_Users` FOREIGN KEY (`TakenBy`) REFERENCES `Users` (`idUsers`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
