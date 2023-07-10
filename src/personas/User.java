@@ -1,3 +1,5 @@
+package personas;
+
 import java.sql.*;
 import java.text.*;
 import java.time.LocalDate;
@@ -46,7 +48,8 @@ public class User {
         this.taxes = taxes;
     }
 
-    public void viewBooks(){
+    public void viewBooks() throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -70,13 +73,13 @@ public class User {
                 int takenBy = resultSet.getInt("TakenBy");
                 String userName = resultSet.getString("UserName");
 
-                System.out.println("Book ID: " + bookId +
+                System.out.println("books.Book ID: " + bookId +
                         ", Name: " + bookName +
                         ", Author: " + author +
                         ", Status: " + status +
                         ", returnDate: " + returnDate +
                         ", Taken By: " + takenBy +
-                        ", User Name: " + userName);
+                        ", personas.User Name: " + userName);
             }
         } catch (SQLException e) {
             System.err.println("Error executing the query: " + e.getMessage());
@@ -103,9 +106,10 @@ public class User {
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
-    public List<Book> yourBookList(List<Book> bookList) {
-
+    public List<Book> yourBookList(List<Book> bookList) throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -153,9 +157,11 @@ public class User {
                 }
             }
         }
+        DatabaseConnection.closeConnection();
         return bookList;
     }
-    public void takeBook(Book book) {
+    public void takeBook(Book book) throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement checkStatement = null;
         PreparedStatement takeStatement = null;
@@ -186,7 +192,7 @@ public class User {
                     int rowsAffected = takeStatement.executeUpdate();
 
                     if (rowsAffected > 0) {
-                        System.out.println("Book taken successfully.");
+                        System.out.println("books.Book taken successfully.");
                     } else {
                         System.out.println("Failed to take the book.");
                     }
@@ -221,9 +227,11 @@ public class User {
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
 
-    public void returnBook(Book book) {
+    public void returnBook(Book book) throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -252,7 +260,7 @@ public class User {
                     int rowsAffected = statement.executeUpdate();
 
                     if (rowsAffected > 0) {
-                        System.out.println("Book returned successfully.");
+                        System.out.println("books.Book returned successfully.");
                     } else {
                         System.out.println("Failed to return the book.");
                     }
@@ -280,11 +288,12 @@ public class User {
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "personas.User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", key='" + key + '\'' +

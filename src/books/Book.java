@@ -1,3 +1,5 @@
+package books;
+
 import java.util.Date;
 
 public class Book {
@@ -56,7 +58,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "books.Book{" +
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", dueReturn=" + returnDate +

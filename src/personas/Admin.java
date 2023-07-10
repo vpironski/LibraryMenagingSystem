@@ -1,6 +1,8 @@
+package personas;
+
+import personas.User;
+
 import java.sql.*;
-import java.text.*;
-import java.util.*;
 
 public class Admin extends User{
     public Admin(int id, String name, String key, int isAdmin, double taxes) {
@@ -8,7 +10,8 @@ public class Admin extends User{
     }
 
 
-    public void removeBook(Book book) {
+    public void removeBook(Book book) throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -22,7 +25,7 @@ public class Admin extends User{
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Book deleted successfully.");
+                System.out.println("books.Book deleted successfully.");
             } else {
                 System.out.println("Failed to delete book.");
             }
@@ -44,8 +47,10 @@ public class Admin extends User{
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
-    public void addBook(Book book){
+    public void addBook(Book book) throws SQLException {
+        DatabaseConnection.openConnection();
             Connection connection = null;
             PreparedStatement preparedStatement = null;
 
@@ -62,7 +67,7 @@ public class Admin extends User{
 
                 int rowsAffected = preparedStatement.executeUpdate();
                 if (rowsAffected > 0) {
-                    System.out.println("Book added successfully.");
+                    System.out.println("books.Book added successfully.");
                 } else {
                     System.out.println("Failed to add book.");
                 }
@@ -84,10 +89,12 @@ public class Admin extends User{
                     }
                 }
             }
+        DatabaseConnection.closeConnection();
     }
 
 
-    public void viewUsers(){
+    public void viewUsers() throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -135,10 +142,12 @@ public class Admin extends User{
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
 
 
-    public void resetTaxes(User user) {
+    public void resetTaxes(User user) throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -174,9 +183,11 @@ public class Admin extends User{
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
 
-    public void addAccount(User user) {
+    public void addAccount(User user) throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -194,7 +205,7 @@ public class Admin extends User{
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("User account added successfully.");
+                System.out.println("personas.User account added successfully.");
             } else {
                 System.out.println("Failed to add the user account.");
             }
@@ -216,9 +227,11 @@ public class Admin extends User{
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
 
-    public void removeAccount(User user) {
+    public void removeAccount(User user) throws SQLException {
+        DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -232,7 +245,7 @@ public class Admin extends User{
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("User account removed successfully.");
+                System.out.println("personas.User account removed successfully.");
             } else {
                 System.out.println("Failed to remove the user account.");
             }
@@ -254,5 +267,6 @@ public class Admin extends User{
                 }
             }
         }
+        DatabaseConnection.closeConnection();
     }
 }

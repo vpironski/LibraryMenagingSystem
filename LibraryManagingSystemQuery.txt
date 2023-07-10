@@ -36,7 +36,7 @@ CREATE TABLE `Books` (
 
 INSERT INTO `Books` (`idBooks`, `Name`, `Author`, `Status`, `returnDate`, `TakenBy`) VALUES
 (1, 'The Shining', 'Stephen King', 1, '2023-11-12', 1),
-(2, 'Howl\'s Moving Castle', 'Diana Wynne Jones\n', 0, NULL, NULL),
+(2, 'Howl's Moving Castle', 'Diana Wynne Jones\n', 0, NULL, NULL),
 (3, 'The Fellowship of the Ring', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
 (4, 'The Two Towers', 'J.R.R. Tolkien', 1, '2023-09-30', 2),
 (5, 'The Return Of The King', 'J.R.R. Tolkien', 1, '2023-09-30', 2),

@@ -1,3 +1,5 @@
+package util;
+
 import java.sql.* ;
 
 public class DatabaseConnection {
@@ -67,7 +69,7 @@ public class DatabaseConnection {
                 int isAdmin = usersResult.getInt("IsAdmin");
                 float taxes = usersResult.getFloat("Taxes");
 
-                System.out.println("User ID: " + userId + ", Name: " + name + ", Key: " + key + ", Is Admin: " + isAdmin + ", Taxes: " + taxes);
+                System.out.println("personas.User ID: " + userId + ", Name: " + name + ", Key: " + key + ", Is personas.Admin: " + isAdmin + ", Taxes: " + taxes);
             }
 
 
