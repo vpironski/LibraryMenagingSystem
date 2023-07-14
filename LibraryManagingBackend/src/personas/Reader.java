@@ -13,5 +13,7 @@ public class Reader extends User {
         super(id, name, key, isAdmin, taxes);
     }
 
-
+    public Reader(String name, String key, int isAdmin, double taxes) {
+        super(name, key, isAdmin, taxes);
+    }
 }

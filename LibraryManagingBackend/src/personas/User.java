@@ -1,4 +1,7 @@
 package personas;
+import books.*;
+import util.*;
+
 
 import java.sql.*;
 import java.text.*;
@@ -14,6 +17,12 @@ public class User {
 
     public User(int id, String name, String key, int isAdmin, double taxes) {
         this.id = id;
+        this.name = name;
+        this.key = key;
+        this.isAdmin = isAdmin;
+        this.taxes = taxes;
+    }
+    public User(String name, String key, int isAdmin, double taxes) {
         this.name = name;
         this.key = key;
         this.isAdmin = isAdmin;
@@ -108,7 +117,8 @@ public class User {
         }
         DatabaseConnection.closeConnection();
     }
-    public List<Book> yourBookList(List<Book> bookList) throws SQLException {
+    public ArrayList<Book> yourBookList() throws SQLException {
+        ArrayList<Book> bookList = new ArrayList<>();
         DatabaseConnection.openConnection();
         Connection connection = null;
         Statement statement = null;
@@ -160,7 +170,7 @@ public class User {
         DatabaseConnection.closeConnection();
         return bookList;
     }
-    public void takeBook(Book book) throws SQLException {
+    public void takeBook(String bookName) throws SQLException {
         DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement checkStatement = null;
@@ -168,11 +178,9 @@ public class User {
 
         try {
             connection = DatabaseConnection.getConnection();
-
-            String checkQuery = "SELECT Status, TakenBy FROM Books WHERE Name = ? AND Author = ?";
+            String checkQuery = "SELECT Status, TakenBy FROM Books WHERE Name = ?";
             checkStatement = connection.prepareStatement(checkQuery);
-            checkStatement.setString(1, book.getName());
-            checkStatement.setString(2, book.getAuthor());
+            checkStatement.setString(1, bookName);
             ResultSet checkResult = checkStatement.executeQuery();
 
             if (checkResult.next()) {
@@ -180,27 +188,25 @@ public class User {
                 int takenBy = checkResult.getInt("TakenBy");
 
                 if (status == 0 && takenBy == 0) {
-
-                    String takeQuery = "UPDATE Books SET Status = ?, TakenBy = ?, returnDate = ? WHERE Name = ? AND Author = ?";
+                    String takeQuery = "UPDATE Books SET Status = ?, TakenBy = ?, returnDate = ? WHERE Name = ?";
                     takeStatement = connection.prepareStatement(takeQuery);
                     takeStatement.setInt(1, 1);
                     takeStatement.setInt(2, getId());
                     LocalDate returnDateDate = LocalDate.now().plusMonths(3);
                     takeStatement.setDate(3, java.sql.Date.valueOf(returnDateDate));
-                    takeStatement.setString(4, book.getName());
-                    takeStatement.setString(5, book.getAuthor());
+                    takeStatement.setString(4, bookName);
                     int rowsAffected = takeStatement.executeUpdate();
 
                     if (rowsAffected > 0) {
-                        System.out.println("books.Book taken successfully.");
+                        System.out.println("Book '" + bookName + "' taken successfully.");
                     } else {
                         System.out.println("Failed to take the book.");
                     }
                 } else {
-                    System.out.println("The book is already taken by another user.");
+                    System.out.println("The book '" + bookName + "' is already taken by another user.");
                 }
             } else {
-                System.out.println("Invalid book name or author.");
+                System.out.println("Invalid book name: '" + bookName + "'.");
             }
         } catch (SQLException e) {
             System.err.println("Error executing the query: " + e.getMessage());
@@ -230,7 +236,7 @@ public class User {
         DatabaseConnection.closeConnection();
     }
 
-    public void returnBook(Book book) throws SQLException {
+    public void returnBook(String bookName) throws SQLException {
         DatabaseConnection.openConnection();
         Connection connection = null;
         PreparedStatement statement = null;
@@ -238,11 +244,9 @@ public class User {
         try {
             connection = DatabaseConnection.getConnection();
 
-
-            String query = "SELECT TakenBy FROM Books WHERE Name = ? AND Author = ?";
+            String query = "SELECT TakenBy FROM Books WHERE Name = ?";
             statement = connection.prepareStatement(query);
-            statement.setString(1, book.getName());
-            statement.setString(2, book.getAuthor());
+            statement.setString(1, bookName);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -250,17 +254,16 @@ public class User {
 
                 if (takenBy == getId()) {
                     // Update the book's status and details
-                    String updateQuery = "UPDATE Books SET Status = ?, TakenBy = ?, returnDate = ? WHERE Name = ? AND Author = ?";
+                    String updateQuery = "UPDATE Books SET Status = ?, TakenBy = ?, returnDate = ? WHERE Name = ?";
                     statement = connection.prepareStatement(updateQuery);
                     statement.setInt(1, 0);
-                    statement.setNull(2, 0);
+                    statement.setNull(2, java.sql.Types.INTEGER);
                     statement.setNull(3, java.sql.Types.DATE);
-                    statement.setString(4, book.getName());
-                    statement.setString(5, book.getAuthor());
+                    statement.setString(4, bookName);
                     int rowsAffected = statement.executeUpdate();
 
                     if (rowsAffected > 0) {
-                        System.out.println("books.Book returned successfully.");
+                        System.out.println("Book '" + bookName + "' returned successfully.");
                     } else {
                         System.out.println("Failed to return the book.");
                     }
