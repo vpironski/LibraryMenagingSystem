@@ -196,16 +196,30 @@ public class Util {
 
         try {
             connection = DatabaseConnection.getConnection();
-            String query = "INSERT INTO Users (Name, `Key`, IsAdmin, Taxes) VALUES (?, ?, 0, 0)";
-            statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            String query = "SELECT * FROM Users WHERE Name = ? AND `Key` = ?";
+            statement = connection.prepareStatement(query);
             statement.setString(1, name);
             statement.setString(2, key);
 
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows > 0) {
-                resultSet = statement.getGeneratedKeys();
-                if (resultSet.next()) {
-                    newReader = new Reader(name, key, 0, 0.0);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return null;
+            } else {
+                String insertQuery = "INSERT INTO Users (Name, `Key`, IsAdmin, Taxes) VALUES (?, ?, 0, 0)";
+                statement = connection.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+                statement.setString(1, name);
+                statement.setString(2, key);
+
+                int affectedRows = statement.executeUpdate();
+                if (affectedRows > 0) {
+                    resultSet = statement.getGeneratedKeys();
+                    if (resultSet.next()) {
+                        newReader = new Reader(name, key, 0, 0.0);
+                        System.out.println("Account created successfully.");
+                    }
+                } else {
+                    System.out.println("Failed to create account.");
                 }
             }
         } catch (SQLException e) {
@@ -236,6 +250,7 @@ public class Util {
         DatabaseConnection.closeConnection();
         return newReader;
     }
+
     public static void quit(){
         System.out.println("The program has been terminated");
         System.exit(0);

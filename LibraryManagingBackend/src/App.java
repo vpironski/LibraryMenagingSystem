@@ -18,11 +18,10 @@ public class App {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
         String input;
-
+        while(true) {
 
             System.out.println("Login or Create Account (login/create): ");
             input = scan.nextLine().toLowerCase();
-        while (true) {
             if (input.equals("login")) {
                 System.out.println("Enter name and key: ");
                 String name = scan.nextLine();
@@ -42,7 +41,7 @@ public class App {
                             System.out.println("TB - Take book from the library");
                             System.out.println("RB - Return book from your book list");
                             System.out.println(" ");
-                            System.out.println("AD - Add a book to the library");
+                            System.out.println("AB- Add a book to the library");
                             System.out.println("DB - Delete a book from the library");
                             System.out.println(" ");
                             System.out.println("AA - Add an account to the library");
@@ -73,7 +72,7 @@ public class App {
                                     bookName = scan.nextLine();
                                     admin.returnBook(bookName);
                                     break;
-                                case "ad":
+                                case "ab":
                                     admin.addBook();
                                     break;
                                 case "db":
@@ -161,7 +160,7 @@ public class App {
                             }
                         }
                     } else {
-                        System.out.println("Invalid name or key. Please try again.");
+                        System.out.println("Profile already exists. Please choose a different name and key.");
                     }
                 } else if (Util.checkAdmin(name, key) == 2) {
                     System.out.println("Invalid name or key. Please try again.");
@@ -172,49 +171,56 @@ public class App {
                 String key = scan.nextLine();
                 Reader reader = Util.createAccount(name, key);
 
-                while (true) {
-                    System.out.println("***********Logged as Reader**************");
-                    System.out.println("***********" + reader.getName() + "**************");
-                    System.out.println("What do you want to do?");
-                    System.out.println("VB - View all books in the library");
-                    System.out.println("VBL - View your book list");
-                    System.out.println(" ");
-                    System.out.println("TB - Take book from the library");
-                    System.out.println("RB - Return book from your book list");
-                    System.out.println("Q - Quit");
-                    System.out.println("*******************************");
-                    System.out.print(": ");
-                    input = scan.nextLine().toLowerCase();
-                    switch (input) {
-                        case "vb":
-                            reader.viewBooks();
-                            break;
-                        case "vbl":
-                            System.out.println(reader.yourBookList());
-                            break;
-                        case "tb":
-                            System.out.print("Input book name: ");
-                            String bookName = scan.nextLine();
-                            reader.takeBook(bookName);
-                            break;
-                        case "rb":
-                            System.out.print("Input book name: ");
-                            bookName = scan.nextLine();
-                            reader.returnBook(bookName);
-                            break;
-                        case "q":
-                            System.out.println("Quitting the program...");
-                            Util.quit();
-                            break;
-                        default:
-                            System.out.println("Invalid input!");
-                            break;
+                if (reader == null){
+                    System.out.println("This profile already exists");
+                }
+                else{
+                    while (true) {
+                        System.out.println("***********Logged as Reader**************");
+                        System.out.println("***********" + reader.getName() + "**************");
+                        System.out.println("What do you want to do?");
+                        System.out.println("VB - View all books in the library");
+                        System.out.println("VBL - View your book list");
+                        System.out.println(" ");
+                        System.out.println("TB - Take book from the library");
+                        System.out.println("RB - Return book from your book list");
+                        System.out.println("Q - Quit");
+                        System.out.println("*******************************");
+                        System.out.print(": ");
+                        input = scan.nextLine().toLowerCase();
+                        switch (input) {
+                            case "vb":
+                                reader.viewBooks();
+                                break;
+                            case "vbl":
+                                System.out.println(reader.yourBookList());
+                                break;
+                            case "tb":
+                                System.out.print("Input book name: ");
+                                String bookName = scan.nextLine();
+                                reader.takeBook(bookName);
+                                break;
+                            case "rb":
+                                System.out.print("Input book name: ");
+                                bookName = scan.nextLine();
+                                reader.returnBook(bookName);
+                                break;
+                            case "q":
+                                System.out.println("Quitting the program...");
+                                Util.quit();
+                                break;
+                            default:
+                                System.out.println("Invalid input!");
+                                break;
+                        }
                     }
                 }
+
             } else {
                 System.out.println("Invalid input! Please try again.");
             }
         }
+
     }
 
 
